@@ -16,14 +16,14 @@
 			<div class="navbar-start">
 
 			</div>
-			<div class="navbar-end" v-if="logged">
+			<div class="navbar-end" v-if="loggedin">
 				<a class="navbar-item">Minhas candidaturas</a>
                 <div class="navbar-item has-dropdown is-hoverable">
 					<a href="#" class="navbar-link">
 						<font-awesome-icon icon="user-circle" />
 					</a>
 					<div class="navbar-dropdown">
-						<a href="javascript:void(0);" @click="logout()">Sair</a>
+						<a href="/logout">Sair</a>
 					</div>
 				</div>
 			</div>
@@ -34,16 +34,12 @@
 <script>
 
 export default {
-    props: ['logged'],
+    props: ['loggedin'],
 	data() {
 		return {
-			loggedIn: false
 		}
 	},
 	methods: {
-		logout(){
-			false
-		}
 	}
 }
 </script>

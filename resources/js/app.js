@@ -29,6 +29,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.component('maintenance', require('./components/Maintenance.vue').default);
 Vue.component('login', require('./components/Auth/Login.vue').default);
+Vue.component('signup', require('./components/Auth/Signup.vue').default);
 Vue.component('lost-password', require('./components/Auth/LostPassword.vue').default);
 Vue.component('remember-password', require('./components/Auth/RememberPassword.vue').default);
 Vue.component('not-found', require('./components/NotFound.vue').default);

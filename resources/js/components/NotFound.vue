@@ -6,7 +6,7 @@
 			<p>Infelizmente não encontramos a página que você estava procurando.
 				Verifique se a url está correta ou tente voltar para a <router-link :to="'/'">página inicial</router-link>.
 			</p>
-			<button type="button" class="button" @click="$router.push('/')">Página Inicial</button>
+			<a type="button" class="button" href="/">Página Inicial</a>
 		</div>
 	</div>
 </template>

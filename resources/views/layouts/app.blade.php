@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <pnqs-header :logged="{{ auth()->user() }}"></pnqs-header>
+        <pnqs-header loggedin="{{ Auth::check() }}"></pnqs-header>
 
         <main class="py-4">
             @yield('content')

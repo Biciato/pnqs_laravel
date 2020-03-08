@@ -22,7 +22,7 @@
 							{{props.row.name}}
 						</b-table-column>
 						<b-table-column :field="'name'" :label="'Categoria'">
-							{{props.row.category.name}}
+							{{props.row.category_name}}
 						</b-table-column>
 						<b-table-column :field="'date'" :label="'Data'">
 							{{props.row.created_at | date}}
@@ -68,6 +68,7 @@
 <script>
 
 export default {
+    props: ['subscriptions'],
 	data() {
 		const tableData = []
 		return {
@@ -77,19 +78,9 @@ export default {
 		}
 	},
 	created(){
-		this.load();
+		this.tableData = this.subscriptions;
 	},
 	methods: {
-		load(){
-			this.isLoading = true
-			/* SubscriptionService.getSubscriptions().then((resp) => {
-				this.tableData = resp.result
-				this.isLoading = false
-			}).catch((error) => {
-				this.isLoading = false
-				alert(error)
-			}) */
-		},
 		remove(id){
 			if (confirm("Tem certeza que deseja excluir essa candidatura?")) {
 				/* SubscriptionService.remove(id).then(() => {
