@@ -17,9 +17,9 @@
 
 			</div>
 			<div class="navbar-end" v-if="loggedin">
-				<a class="navbar-item">Minhas candidaturas</a>
+				<a href="/" class="navbar-item">Minhas candidaturas</a>
                 <div class="navbar-item has-dropdown is-hoverable">
-					<a href="#" class="navbar-link">
+					<a href="/" class="navbar-link">
 						<font-awesome-icon icon="user-circle" />
 					</a>
 					<div class="navbar-dropdown">

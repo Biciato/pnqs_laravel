@@ -22,16 +22,16 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-field label="Razão Social" :type="errors.includes('name') ? 'is-danger': ''" :message="errors.includes('name') ? errors.first('name') :''">
-					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+				<b-field label="Razão Social">
+					<ValidationProvider name="name" rules="required" v-slot="{ errors }">
 						<b-input :disabled="canEdit" name="name" v-model="editedSubscription.name"></b-input>
 						<span>{{ errors[0] }}</span>
 					</ValidationProvider>
 				</b-field>
 			</div>
 			<div class="column" >
-				<b-field label="Candidata (Responsável)" :type="errors.includes('cadidate') ? 'is-danger': ''" :message="errors.includes('cadidate') ? errors.first('cadidate') :''">
-					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+				<b-field label="Candidata (Responsável)">
+					<ValidationProvider name="cadidate" rules="required" v-slot="{ errors }">
 						<b-input :disabled="canEdit" name="cadidate" v-model="editedSubscription.candidate"></b-input>
 						<span>{{ errors[0] }}</span>
 					</ValidationProvider>
@@ -51,8 +51,8 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-field label="CNPJ" :type="errors.includes('document') ? 'is-danger': ''" :message="errors.includes('document') ? errors.first('document') :''">
-					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+				<b-field label="CNPJ">
+					<ValidationProvider name="document" rules="required" v-slot="{ errors }">
 						<b-input :disabled="canEdit" name="document" v-model="editedSubscription.document_id" v-cleave="masks.cnpj"></b-input>
 						<span>{{ errors[0] }}</span>
 					</ValidationProvider>
@@ -64,8 +64,8 @@
 				</b-field>
 			</div>
 			<div class="column">
-				<b-field label="Data de início das atividades" :type="errors.includes('data_atividade') ? 'is-danger': ''" :message="errors.includes('data_atividade') ? errors.first('data_atividade') :''">
-					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+				<b-field label="Data de início das atividades">
+					<ValidationProvider name="data_atividade" rules="required" v-slot="{ errors }">
 						<b-datepicker :disabled="canEdit" name="data_atividade" v-model="editedSubscription.economic_activity_start" :date-parser="(date) => formatDate(date)" :date-formatter="(date) => formatDateToInput(date)" placeholder="Selecione a data" icon="calendar-today">
 						</b-datepicker>
 						<span>{{ errors[0] }}</span>
@@ -76,8 +76,8 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-field label="Principais atividades" :type="errors.includes('atividades') ? 'is-danger': ''" :message="errors.includes('atividades') ? errors.first('atividades') :''">
-					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+				<b-field label="Principais atividades">
+					<ValidationProvider name="atividades" rules="required" v-slot="{ errors }">
 						<b-input :disabled="canEdit" name="atividades" type="textarea" v-model="editedSubscription.economic_activities"></b-input>
 						<span>{{ errors[0] }}</span>
 					</ValidationProvider>
@@ -86,8 +86,8 @@
 		</div>
 		<div class="columns">
 			<div class="column is-two-fifths">
-				<b-field label="Quantidade de pessoas na força de trabalho" :type="errors.includes('qtd_pessoas') ? 'is-danger': ''" :message="errors.includes('qtd_pessoas') ? errors.first('qtd_pessoas') :''">
-					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+				<b-field label="Quantidade de pessoas na força de trabalho">
+					<ValidationProvider name="qtd_pessoas" rules="required" v-slot="{ errors }">
 						<b-input :disabled="canEdit" name="qtd_pessoas" type="text" v-model="editedSubscription.persons_qt"></b-input>
 						<span>{{ errors[0] }}</span>
 					</ValidationProvider>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Subscription;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreSubscription;
 
 class SubscriptionController extends Controller
 {
@@ -22,5 +23,11 @@ class SubscriptionController extends Controller
 
     public function show(Subscription $subscription) {
         return view('candidaturas.show', ['subscription' => $subscription->complete($subscription->id)->first()]);
+    }
+
+    public function store(Subscription $subscription, StoreSubscription $request) {
+        $subscription->create($request->all());
+
+        return 'success';
     }
 }

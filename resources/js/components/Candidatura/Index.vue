@@ -97,7 +97,7 @@ export default {
 			}
 		},
 		view(id){
-			window.location.assign(`/visualizar-candidatura/${id}`);
+			window.location.assign(`/candidatura/${id}`);
 		}
 	}
 }
