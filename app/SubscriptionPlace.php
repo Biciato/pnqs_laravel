@@ -19,4 +19,8 @@ class SubscriptionPlace extends Model
         'persons_qtd',
     ];
     protected $table = 'subscription_place';
+
+    public function subscription() {
+        return $this->belongsTo('App\Subscription');
+    }
 }

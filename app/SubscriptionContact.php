@@ -13,4 +13,8 @@ class SubscriptionContact extends Model
         'email'
     ];
     protected $table = 'subscription_contact';
+
+    public function subscription() {
+        return $this->belongsTo('App\Subscription');
+    }
 }

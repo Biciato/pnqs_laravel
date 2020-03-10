@@ -47,6 +47,21 @@ class Subscription extends Model
     ];
     protected $table = 'subscription';
 
+    public function subscriptionContacts()
+    {
+        return $this->hasMany('App\SubscriptionContact');
+    }
+
+    public function subscriptionPlaces()
+    {
+        return $this->hasMany('App\SubscriptionPlace');
+    }
+
+    public function subscriptionPractices()
+    {
+        return $this->hasMany('App\SubscriptionPractice');
+    }
+
     public function user() {
         return $this->belongsTo('App\User');
     }
@@ -62,5 +77,13 @@ class Subscription extends Model
                             'subscription.created_at',
                             'subscription_category.name as category_name'
                         );
+    }
+
+    public function scopeComplete($query, $id) {
+        return $query->whereId($id)
+                        ->with(['subscriptionContacts', 'subscriptionPlaces'])
+                        ->with(['subscriptionPractices' => function ($query) {
+                            $query->join('subscription_subgroup', 'subscription_subgroup.id', '=', 'subscription_practice.subgroup_id');
+                        }]);
     }
 }

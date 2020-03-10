@@ -127,7 +127,7 @@ export default {
                     message: 'Cadastrado com sucesso!',
                     type: 'is-success'
                 }))
-                .then(() => window.location.replace('/'))
+                .then(() => window.location.assign('/'))
                 .catch(() => {
                     this.$buefy.toast.open({
                         duration: 5000,
@@ -138,7 +138,7 @@ export default {
                 })
         },
         back() {
-            window.location.replace("/login");
+            window.location.assign("/login");
         }
     }
 };

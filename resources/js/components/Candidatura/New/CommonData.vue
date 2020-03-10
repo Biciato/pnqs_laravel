@@ -22,13 +22,19 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-field label="Razão Social" :type="errors.has('name') ? 'is-danger': ''" :message="errors.has('name') ? errors.first('name') :''">
-					<b-input :disabled="canEdit" name="name" v-model="editedSubscription.name" v-validate="'required'"></b-input>
+				<b-field label="Razão Social" :type="errors.includes('name') ? 'is-danger': ''" :message="errors.includes('name') ? errors.first('name') :''">
+					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+						<b-input :disabled="canEdit" name="name" v-model="editedSubscription.name"></b-input>
+						<span>{{ errors[0] }}</span>
+					</ValidationProvider>
 				</b-field>
 			</div>
 			<div class="column" >
-				<b-field label="Candidata (Responsável)" :type="errors.has('cadidate') ? 'is-danger': ''" :message="errors.has('cadidate') ? errors.first('cadidate') :''">
-					<b-input :disabled="canEdit" name="cadidate" v-model="editedSubscription.candidate" v-validate="'required'"></b-input>
+				<b-field label="Candidata (Responsável)" :type="errors.includes('cadidate') ? 'is-danger': ''" :message="errors.includes('cadidate') ? errors.first('cadidate') :''">
+					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+						<b-input :disabled="canEdit" name="cadidate" v-model="editedSubscription.candidate"></b-input>
+						<span>{{ errors[0] }}</span>
+					</ValidationProvider>
 				</b-field>
 			</div>
 			<div class="column">
@@ -45,8 +51,11 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-field label="CNPJ" :type="errors.has('document') ? 'is-danger': ''" :message="errors.has('document') ? errors.first('document') :''">
-					<b-input :disabled="canEdit" name="document" v-model="editedSubscription.document_id" v-cleave="masks.cnpj" v-validate="'required'"></b-input>
+				<b-field label="CNPJ" :type="errors.includes('document') ? 'is-danger': ''" :message="errors.includes('document') ? errors.first('document') :''">
+					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+						<b-input :disabled="canEdit" name="document" v-model="editedSubscription.document_id" v-cleave="masks.cnpj"></b-input>
+						<span>{{ errors[0] }}</span>
+					</ValidationProvider>
 				</b-field>
 			</div>
 			<div class="column">
@@ -55,23 +64,33 @@
 				</b-field>
 			</div>
 			<div class="column">
-				<b-field label="Data de início das atividades" :type="errors.has('data_atividade') ? 'is-danger': ''" :message="errors.has('data_atividade') ? errors.first('data_atividade') :''">
-					<b-datepicker :disabled="canEdit" name="data_atividade" v-validate="'required'" v-model="editedSubscription.economic_activity_start" :date-parser="(date) => formatDate(date)" :date-formatter="(date) => formatDateToInput(date)" placeholder="Selecione a data" icon="calendar-today">
-					</b-datepicker>
+				<b-field label="Data de início das atividades" :type="errors.includes('data_atividade') ? 'is-danger': ''" :message="errors.includes('data_atividade') ? errors.first('data_atividade') :''">
+					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+						<b-datepicker :disabled="canEdit" name="data_atividade" v-model="editedSubscription.economic_activity_start" :date-parser="(date) => formatDate(date)" :date-formatter="(date) => formatDateToInput(date)" placeholder="Selecione a data" icon="calendar-today">
+						</b-datepicker>
+						<span>{{ errors[0] }}</span>
+					</ValidationProvider>
+
 				</b-field>
 			</div>
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-field label="Principais atividades" :type="errors.has('atividades') ? 'is-danger': ''" :message="errors.has('atividades') ? errors.first('atividades') :''">
-					<b-input :disabled="canEdit" name="atividades" v-validate="'required'" type="textarea" v-model="editedSubscription.economic_activities"></b-input>
+				<b-field label="Principais atividades" :type="errors.includes('atividades') ? 'is-danger': ''" :message="errors.includes('atividades') ? errors.first('atividades') :''">
+					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+						<b-input :disabled="canEdit" name="atividades" type="textarea" v-model="editedSubscription.economic_activities"></b-input>
+						<span>{{ errors[0] }}</span>
+					</ValidationProvider>
 				</b-field>
 			</div>
 		</div>
 		<div class="columns">
 			<div class="column is-two-fifths">
-				<b-field label="Quantidade de pessoas na força de trabalho" :type="errors.has('qtd_pessoas') ? 'is-danger': ''" :message="errors.has('qtd_pessoas') ? errors.first('qtd_pessoas') :''">
-					<b-input :disabled="canEdit" name="qtd_pessoas" v-validate="'required'" type="text" v-model="editedSubscription.persons_qt"></b-input>
+				<b-field label="Quantidade de pessoas na força de trabalho" :type="errors.includes('qtd_pessoas') ? 'is-danger': ''" :message="errors.includes('qtd_pessoas') ? errors.first('qtd_pessoas') :''">
+					<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+						<b-input :disabled="canEdit" name="qtd_pessoas" type="text" v-model="editedSubscription.persons_qt"></b-input>
+						<span>{{ errors[0] }}</span>
+					</ValidationProvider>
 				</b-field>
 				<p class="help is-danger">Incluir terceiros que estejam sob coordenação da candidata.</p>
 			</div>
@@ -92,7 +111,7 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-table :data="editedSubscription.places.length <= 0 ? [] : editedSubscription.places" :striped="true" :loading="isLoading">
+				<b-table :data="editedSubscription.subscription_places.length <= 0 ? [] : editedSubscription.subscription_places" :striped="true" :loading="isLoading">
 					<template slot-scope="props">
 						<b-table-column :field="'name'" :label="'Nome'">
 							{{props.row.name}}
@@ -129,7 +148,7 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<b-table :data="editedSubscription.contacts.length <= 0 ? [] : editedSubscription.contacts" :striped="true" :loading="isLoading">
+				<b-table :data="editedSubscription.subscription_contacts.length <= 0 ? [] : editedSubscription.subscription_contacts" :striped="true" :loading="isLoading">
 					<template slot-scope="props">
 						<b-table-column :field="'type'" :label="'Categoria'">
 							<span v-if="props.row.type == 'DIR'">Principal dirigente</span>
@@ -174,11 +193,22 @@
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate';
 import moment from 'moment'
+import PlaceModal from './PlaceModal.vue'
+import ContatoModal from './ContactModal.vue'
+import CleaveD from '../../../directives/index'
 
 export default {
 	props: ["subscription", "canEdit"],
-	inject: ['$validator'],
+	directives: {
+		CleaveD
+	},
+	components: {
+		PlaceModal,
+		ContatoModal,
+		ValidationProvider
+	},
 	data(){
 		return {
 			isLoading: false,
@@ -195,7 +225,8 @@ export default {
 					blocks: [2,3,3,4,2],
 					numericOnly: true
 				}
-			}
+			},
+			errors: []
 		}
 	},
 	watch: {
@@ -217,11 +248,11 @@ export default {
 			return moment(Date.parse(date)).format('YYYY-MM-DD')
 		},
 		addPlace(place){
-			var indexof = this.editedSubscription.places.indexOf(place)
+			var indexof = this.editedSubscription.subscription_places.indexOf(place)
 			if (indexof > -1) {
-				this.editedSubscription.places[indexof] = place
+				this.editedSubscription.subscription_places[indexof] = place
 			} else {
-				this.editedSubscription.places.push(place)
+				this.editedSubscription.subscription_places.push(place)
 			}
 			this.place = {}
 		},
@@ -230,11 +261,11 @@ export default {
 			this.isPlacesModalActive = true
 		},
 		addContact(contact){
-			var indexof = this.editedSubscription.contacts.indexOf(contact)
+			var indexof = this.editedSubscription.subscription_contacts.indexOf(contact)
 			if (indexof > -1) {
-				this.editedSubscription.contacts[indexof] = contact
+				this.editedSubscription.subscription_contacts[indexof] = contact
 			} else {
-				this.editedSubscription.contacts.push(contact)
+				this.editedSubscription.subscription_contacts.push(contact)
 			}
 			this.contact = {}
 		},
@@ -243,15 +274,15 @@ export default {
 			this.isContatosModalActive = true
 		},
 		removePlace(place){
-			var indexOf = this.editedSubscription.places.indexOf(place)
+			var indexOf = this.editedSubscription.subscription_places.indexOf(place)
 			if (indexOf >= 0) {
-				this.editedSubscription.places.splice(indexOf, 1)
+				this.editedSubscription.subscription_places.splice(indexOf, 1)
 			}
 		},
 		removeContact(contact){
-			var indexOf = this.editedSubscription.contacts.indexOf(contact)
+			var indexOf = this.editedSubscription.subscription_contacts.indexOf(contact)
 			if (indexOf >= 0) {
-				this.editedSubscription.contacts.splice(indexOf, 1)
+				this.editedSubscription.subscription_contacts.splice(indexOf, 1)
 			}
 		}
 	}

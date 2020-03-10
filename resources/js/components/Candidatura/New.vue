@@ -150,8 +150,11 @@
 
 				<div class="columns">
 					<div class="column is-half" v-if="subscription.subscription_subcategory_id >= 4">
-						<b-field label="Razão Social do fornecedor indicado" :type="errors.has('indicate_company_name') ? 'is-danger': ''" :message="errors.has('indicate_company_name') ? errors.first('indicate_company_name') :''">
-							<b-input name="indicate_company_name" v-model="subscription.indicate_company_name" v-validate="'required'"></b-input>
+						<b-field label="Razão Social do fornecedor indicado" :type="errors.includes('indicate_company_name') ? 'is-danger': ''" :message="errors.includes('indicate_company_name') ? errors.first('indicate_company_name') :''">
+							<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+								<b-input name="indicate_company_name" v-model="subscription.indicate_company_name"></b-input>
+								<span>{{ errors[0] }}</span>
+							</ValidationProvider>
 						</b-field>
 					</div>
 				</div>
@@ -201,8 +204,11 @@
 					</div>
 					<div class="columns">
 						<div class="column">
-							<b-field label="Resumo da Prática" :type="errors.has('results') ? 'is-danger': ''" :message="errors.has('results') ? errors.first('results') :''">
-								<b-input v-model="subscription.practice_resume" name="resume" v-validate="'required'" type="textarea"></b-input>
+							<b-field label="Resumo da Prática" :type="errors.includes('results') ? 'is-danger': ''" :message="errors.includes('results') ? errors.first('results') :''">
+								<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+									<b-input v-model="subscription.practice_resume" name="resume" type="textarea"></b-input>
+									<span>{{ errors[0] }}</span>
+								</ValidationProvider>
 							</b-field>
 							<p class="has-text-danger is-size-7">
 								Não são elegíveis Trabalhos relativos a melhorias, ideias ou inovações em produtos, processos ou práticas operacionais,
@@ -231,8 +237,11 @@
 					</div>
 					<div class="columns">
 						<div class="column">
-							<b-field label="Resultados Alcançados" :type="errors.has('results') ? 'is-danger': ''" :message="errors.has('results') ? errors.first('results') :''">
-								<b-input v-model="subscription.results" name="results" v-validate="'required'" type="textarea"></b-input>
+							<b-field label="Resultados Alcançados" :type="errors.includes('results') ? 'is-danger': ''" :message="errors.includes('results') ? errors.first('results') :''">
+								<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+									<b-input v-model="subscription.results" name="results" type="textarea"></b-input>
+									<span>{{ errors[0] }}</span>
+								</ValidationProvider>
 							</b-field>
 							<p class="has-text-danger is-size-7">
 								Um ou mais tipos de resultados quantitativos relevantes, com demonstração do “antes” e “depois” da prática.
@@ -246,8 +255,11 @@
 					<h1 class="title is-6">Aplicável para categoria PEOS</h1>
 					<div class="columns">
 						<div class="column">
-							<b-field label="Denominação do Programa de aumento da Eficiência" :type="errors.has('practice_name') ? 'is-danger': ''" :message="errors.has('practice_name') ? errors.first('practice_name') :''">
-								<b-input v-model="subscription.practice_name" name="practice_name" v-validate="'required'"></b-input>
+							<b-field label="Denominação do Programa de aumento da Eficiência" :type="errors.includes('practice_name') ? 'is-danger': ''" :message="errors.includes('practice_name') ? errors.first('practice_name') :''">
+								<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+									<b-input v-model="subscription.practice_name" name="practice_name"></b-input>
+									<span>{{ errors[0] }}</span>
+								</ValidationProvider>
 							</b-field>
 						</div>
 						<div class="column">
@@ -260,8 +272,11 @@
 					</div>
 					<div class="columns">
 						<div class="column">
-							<b-field label="Resumo do Programa" :type="errors.has('resume') ? 'is-danger': ''" :message="errors.has('resume') ? errors.first('resume') :''">
-								<b-input v-model="subscription.practice_resume" type="textarea" name="resume" v-validate="'required'"></b-input>
+							<b-field label="Resumo do Programa" :type="errors.includes('resume') ? 'is-danger': ''" :message="errors.includes('resume') ? errors.first('resume') :''">
+								<ValidationProvider name="field" rules="required" v-slot="{ errors }">
+									<b-input v-model="subscription.practice_resume" type="textarea" name="resume"></b-input>
+									<span>{{ errors[0] }}</span>
+								</ValidationProvider>
 							</b-field>
 							<p class="has-text-danger is-size-7">
 								Lembrete: Não são elegíveis Trabalhos relativos a softwares aplicativos, equipamentos, instrumentos, ferramentas, obras e outras soluções técnicas.
@@ -290,7 +305,7 @@
 						</div>
 					</div>
 					<hr>
-					<b-table :data="this.subscription.practices.length <= 0 ? [] : this.subscription.practices" :striped="true" :loading="isLoading">
+					<b-table :data="this.subscription.subscription_practices.length <= 0 ? [] : this.subscription.subscription_practices" :striped="true" :loading="isLoading">
 						<template slot-scope="props">
 							<b-table-column :field="'name'" :label="'Denominação da Prática'">
 								{{props.row.name}}
@@ -385,7 +400,20 @@
 
 import subscriptionApi from '../../api/subscription'
 
+import CommonData from './New/CommonData.vue'
+import PraticasModal from './New/PraticasModal.vue'
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import { validate } from 'vee-validate';
+
+import axios from 'axios'
+
 export default {
+	components: {
+		PraticasModal,
+		CommonData,
+        ValidationProvider,
+        ValidationObserver
+	},
 	data() {
 		return {
 			subscription_category_id: "",
@@ -393,10 +421,11 @@ export default {
 			name: "",
 			subscription: {
 				is_public: "0",
-				places: [],
-				contacts: [],
-				practices: []
+				subscription_places: [],
+				subscription_contacts: [],
+				subscription_practices: []
 			},
+			errors: [],
 			isPraticasModalActive: false
 		}
 	},
@@ -404,9 +433,9 @@ export default {
 		"subscription_category_id"(newValue){
 			this.subscription = {
 				is_public: "0",
-				places: [],
-				contacts: [],
-				practices: []
+				subscription_places: [],
+				subscription_contacts: [],
+				subscription_practices: []
 			}
 			this.subscription.subscription_category_id = newValue
 		}
@@ -416,38 +445,29 @@ export default {
 	},
 	methods: {
 		save(){
-			this.$validator.validateAll().then((isValid) => {
-				if (isValid) {
-					if (this.subscription.places.length <= 0) {
-						alert("É obrigatório enviar ao menos um local da instalação com força de trabalho.")
-						return false
-					}
-					this.isLoading = true
-					subscriptionApi.save(this.subscription).then(() => {
-						this.isLoading = false
-						this.$toast.open({
-							message: 'Pedido enviado com sucesso!',
-							type: 'is-success'
-						})
-						this.$router.push({path: "/candidaturas", params: {completed: true}})
-					}).catch((error) => {
-						this.isLoading = false
-						alert(error.data.message)
-						this.subscription.contacts = []
-						this.subscription.places = []
-					})
-				}else{
-					alert("Por favor verifique todos os campos de preenchimento obrigatório.")
-				}
-			})
+            axios.post("/login",
+                {
+                    ... this.subscription
+                },
+                {
+                    headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content")
+                    }
+                }
+            )
+            .then(() => window.location.assign("/"))
+            .catch(() => (this.error = "Favor preencher todos os dados"));
 		},
 		addPractice(practice){
-			this.subscription.practices.push(practice)
+			this.subscription.subscription_practices.push(practice)
 		},
 		removePractice(practice){
-			var indexOf = this.subscription.practices.indexOf(practice)
+			var indexOf = this.subscription.subscription_practices.indexOf(practice)
 			if (indexOf >= 0) {
-				this.subscription.practices.splice(indexOf, 1)
+				this.subscription.subscription_practices.splice(indexOf, 1)
 			}
 		}
 	}

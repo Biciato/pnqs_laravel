@@ -92,7 +92,7 @@ export default {
             }
           }
         )
-        .then(() => window.location.replace("/"))
+        .then(() => window.location.assign("/"))
         .catch(() => (this.error = "As credenciais inseridas não conferem"));
     }
   }

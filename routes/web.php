@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', 'SubscriptionController@index')->middleware('auth');
+Route::get('/solicitacao-elegibilidade', 'SubscriptionController@new')->middleware('auth');
+Route::get('/visualizar-candidatura/{subscription}', 'SubscriptionController@show')->middleware('auth');
+
+Route::post('/change-password', 'Auth\ForgotPasswordController@changePassword');
 
 Auth::routes();
 

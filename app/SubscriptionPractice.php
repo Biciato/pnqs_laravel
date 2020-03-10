@@ -18,4 +18,8 @@ class SubscriptionPractice extends Model
         'stakeholders',
     ];
     protected $table = 'subscription_practice';
+
+    public function subscription() {
+        return $this->belongsTo('App\Subscription');
+    }
 }

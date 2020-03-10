@@ -160,7 +160,10 @@
 				<div class="columns">
 					<div class="column is-half" v-if="subscription.subscription_subcategory_id >= 4">
 						<b-field label="Razão Social do fornecedor indicado" :type="errors.has('indicate_company_name') ? 'is-danger': ''" :message="errors.has('indicate_company_name') ? errors.first('indicate_company_name') :''">
-							<b-input :disabled="canEdit" name="indicate_company_name" v-model="subscription.indicate_company_name" v-validate="'required'"></b-input>
+                            <ValidationProvider name="field" rules="required" v-slot="{ errors }">
+                                <b-input :disabled="canEdit" name="indicate_company_name" v-model="subscription.indicate_company_name"></b-input>
+                                <span>{{ errors[0] }}</span>
+                            </ValidationProvider>
 						</b-field>
 					</div>
 				</div>
@@ -523,18 +526,18 @@
 <script>
 
 import subscriptionApi from '../../api/subscription'
+import { ValidationProvider } from 'vee-validate';
 
 export default {
+    props: ['subscription'],
+    components: {
+		ValidationProvider
+	},
 	data() {
 		return {
 			subscription_category_id: "",
 			isLoading: false,
 			name: "",
-			subscription: {
-				places: [],
-				contacts: [],
-				practices: []
-			},
 			isPraticasModalActive: false
 		}
 	},
@@ -560,24 +563,21 @@ export default {
 	},
 	methods: {
 		getData(){
-			subscriptionApi.get(this.$route.params.id).then((res) => {
-				this.subscription = res.data.result
-				delete this.subscription["user"]
-				delete this.subscription["companysize"]
-				delete this.subscription["subcategory"]
-				delete this.subscription["category"]
-				delete this.subscription["group"]
-				delete this.subscription["subgroup"]
-				this.subscription["economic_activity_start"] = new Date(this.subscription["economic_activity_start"])
-				this.subscription["implantation_start_dt"] = new Date(this.subscription["implantation_start_dt"])
-				if (this.subscription.agree_examiners) {
-					this.subscription.agree_examiners = this.subscription.agree_examiners.toString()
-				}
-				this.subscription.has_autonomy = (this.subscription.has_autonomy == 1)
-				this.subscription.agree_examiners = (this.subscription.agree_examiners == 1)
-				this.subscription.agree_sqfsa = (this.subscription.agree_sqfsa == 1)
-				this.subscription.has_restriction = (this.subscription.has_restriction == 1)
-			})
+            delete this.subscription["user"]
+            delete this.subscription["companysize"]
+            delete this.subscription["subcategory"]
+            delete this.subscription["category"]
+            delete this.subscription["group"]
+            delete this.subscription["subgroup"]
+            this.subscription["economic_activity_start"] = new Date(this.subscription["economic_activity_start"])
+            this.subscription["implantation_start_dt"] = new Date(this.subscription["implantation_start_dt"])
+            if (this.subscription.agree_examiners) {
+                this.subscription.agree_examiners = this.subscription.agree_examiners.toString()
+            }
+            this.subscription.has_autonomy = (this.subscription.has_autonomy == 1)
+            this.subscription.agree_examiners = (this.subscription.agree_examiners == 1)
+            this.subscription.agree_sqfsa = (this.subscription.agree_sqfsa == 1)
+            this.subscription.has_restriction = (this.subscription.has_restriction == 1)
 		},
 		save(){
 			this.$validator.validateAll().then((isValid) => {

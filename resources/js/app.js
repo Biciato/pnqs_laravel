@@ -24,6 +24,10 @@ library.add(faUserCircle);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 Vue.use(require('buefy'));
+Vue.use(require('./filters/index'));
+Vue.use(require('vee-validate'));
+Vue.use(require('./validators/index'));
+Vue.use(require('vue-the-mask'));
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
