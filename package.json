@@ -30,7 +30,7 @@
         "@fortawesome/vue-fontawesome": "^0.1.9",
         "buefy": "^0.8.12",
         "cleave.js": "^1.5.6",
-        "moment": "^2.24.0",
+        "moment": "^2.29.4",
         "numeral": "^2.0.6",
         "vee-validate": "^3.2.5",
         "vue": "^2.6.11",
